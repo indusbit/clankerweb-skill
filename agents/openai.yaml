@@ -1,0 +1,4 @@
+interface:
+  display_name: "Clankerweb"
+  short_description: "Publish static sites to Clankerweb"
+  default_prompt: "Use $clankerweb to publish this static site and return the live URL."
