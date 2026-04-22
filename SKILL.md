@@ -41,11 +41,16 @@ If no API key is available, tell the user to open:
 https://app.clankerweb.com/agent/connect
 ```
 
-They should sign up or sign in, create a upload API key, and paste the token back into
-the agent chat.
+They should sign up or sign in, create an upload API key, and configure it outside
+chat, such as in `CLANKERWEB_API_KEY`, their usual local secret store, or another
+credential mechanism supported by their agent environment.
 
 If an API request returns `API_KEY_REQUIRED` or `MISSING_API_KEY_SCOPE`, show the `agent.connectUrl`
-from the response and ask the user to create or provide a key with the required scopes.
+from the response and ask the user to configure a key with the required scopes outside chat.
+
+Do not ask the user to paste API keys into chat. Do not print, echo, log, or return API key
+values. Use authenticated publishing only when the key is already available from the
+environment or an approved local secret source.
 
 ### Temporary email publishing
 
@@ -174,9 +179,9 @@ summarize the available sites, and ask which one to update.
 2. Confirm the publish root contains `index.html` for HTML sites.
 3. Read `CLANKERWEB_API_KEY` if available.
 4. Choose the publish mode:
-5. If the user provided an API key or needs a custom domain/update flow, use the authenticated `/upload` API.
-6. If the user did not provide an API key and accepts a temporary generated URL, use `POST /upload` with `X-Email`.
-7. If no API key is available for an authenticated flow, send the user to `https://app.clankerweb.com/agent/connect`.
+5. If an API key is available from the environment or approved local secret source, use the authenticated `/upload` API.
+6. If no API key is available and the user accepts a temporary generated URL, use `POST /upload` with `X-Email`.
+7. If no API key is available for a custom domain or update flow, send the user to `https://app.clankerweb.com/agent/connect` and have them configure the key outside chat.
 8. For a new authenticated site, call `POST /upload`.
 9. For replacing a site, call `GET /profile` if needed, then `PUT /upload`.
 10. Return the live URL and mention whether the deployment status is `READY`.
